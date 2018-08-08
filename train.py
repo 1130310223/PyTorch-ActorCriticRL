@@ -60,7 +60,7 @@ class Trainer:
 		:param state: state (Numpy array)
 		:return: sampled action (Numpy array)
 		"""
-		state = Variable(torch.from_numpy(state))
+		state = Variable(torch.from_numpy(state.reshape([-1,3])))
 		action = self.actor.forward(state).detach()
 		new_action = action.data.numpy() + (self.noise.sample() * self.action_lim)
 		return new_action
@@ -73,7 +73,7 @@ class Trainer:
 		s1,a1,r1,s2 = self.ram.sample(BATCH_SIZE)
 
 		s1 = Variable(torch.from_numpy(s1))
-		a1 = Variable(torch.from_numpy(a1))
+		a1 = Variable(torch.from_numpy(a1)).squeeze(2)
 		r1 = Variable(torch.from_numpy(r1))
 		s2 = Variable(torch.from_numpy(s2))
 

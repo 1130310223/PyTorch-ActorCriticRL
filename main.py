@@ -10,8 +10,8 @@ import gc
 import train
 import buffer
 
-env = gym.make('BipedalWalker-v2')
-# env = gym.make('Pendulum-v0')
+#env = gym.make('BipedalWalker-v2')
+env = gym.make('Pendulum-v0')
 
 MAX_EPISODES = 5000
 MAX_STEPS = 1000
@@ -33,8 +33,7 @@ for _ep in range(MAX_EPISODES):
 	print 'EPISODE :- ', _ep
 	for r in range(MAX_STEPS):
 		env.render()
-		state = np.float32(observation)
-
+		state = np.float32(observation).reshape(S_DIM)
 		action = trainer.get_exploration_action(state)
 		# if _ep%5 == 0:
 		# 	# validate every 5th episode
@@ -52,7 +51,7 @@ for _ep in range(MAX_EPISODES):
 		if done:
 			new_state = None
 		else:
-			new_state = np.float32(new_observation)
+			new_state = np.float32(new_observation).reshape(S_DIM)
 			# push this exp in ram
 			ram.add(state, action, reward, new_state)
 
